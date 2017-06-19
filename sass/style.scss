@@ -1,15 +1,21 @@
 @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
+$primary-color: #0e0e0e;
+$secondary-color: #ffe560;
+$tertiary-color: #ff9c00;
+$shadow-color-a: #f2f2f2;
+$shadow-color-b: #ffffff;
+
 body {
-  background-color: #0e0900;
+  background-color: $primary-color;
   margin: 0px;
   overflow-y: hidden;
 }
 
 header {
   display: flex;
-  background-color: #ffe560;
+  background-color: $secondary-color;
   height: 100px;
   justify-content: flex-end;
   overflow: hidden;
@@ -47,17 +53,92 @@ header {
 .chat-box {
   display: flex;
   flex-direction: column;
-  background-color: #f2f2f2;
+  background-color: $shadow-color-a;
   width: 300px;
   height: 100%;
   margin: 0 auto;
   margin-top: 10px;
+  padding-top: 5px;
   border-radius: 10px 10px 0px 0px;
 
   .container-messages {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
     height: 100%;
+    padding: 5px;
+    padding-bottom: 80%;
+    overflow-y: auto;
+
+    .message-box {
+      width: 290px;
+      margin-top: 15px;
+
+      .box-user-name {
+        background-color: $primary-color;
+        width: 250px;
+        color: $shadow-color-b;
+        padding: 5px;
+        border-radius: 0px 30px 0px 0px;
+        overflow: hidden;
+
+        h1 {
+          width: 240px;
+          text-align: left;
+          margin: 0px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 1.2em;
+        }
+
+      }
+
+      .box-user-message {
+        background-color: $shadow-color-b;
+        max-width: 280px;
+        padding: 5px;
+        border-radius: 0px 10px 10px 10px;
+        box-shadow: 1px 1px 5px 0px #cccccc;
+        border-right: 1px solid #ececec;
+        border-left: 1px solid #ececec;
+        border-bottom: 1px solid #ececec;
+
+        p {
+          text-align: justify;
+          margin: 0px;
+          font-size: 1.2em;
+        }
+
+      }
+
+    }
+
+    .message-box.sent {
+
+      .box-user-name {
+        border-radius: 30px 0px 0px 0px;
+        margin-left: auto;
+
+        h1 {
+          margin-left: auto;
+        }
+
+      }
+
+      .box-user-message {
+        background-color: $tertiary-color;
+        border-radius: 10px 0px 10px 10px;
+        border: 0px;
+
+        p {
+          color: white;
+        }
+
+      }
+
+    }
+
   }
 
 }
@@ -74,10 +155,10 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffffff;
+    background-color: $shadow-color-b;
     width: 220px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: 50px;
     margin-right: 10px;
     padding: 5px;
 
@@ -89,17 +170,18 @@ header {
       border: 0px;
       font-size: 1.2em;
       text-align: center;
+      color: #acacac;
       outline: none;
     }
 
   }
 
   .button-send {
-    background-color: #fff;
+    background-color: $shadow-color-b;
     width: 20px;
     height: 20px;
     border-radius: 70px;
-    border: 10px solid #f79a08;
+    border: 10px solid $tertiary-color;
   }
 
 }
