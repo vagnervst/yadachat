@@ -1,8 +1,9 @@
-let $ = require('jquery');
+import $ from 'jquery';
 
 $(document).ready(function() {
 
   $("header .button-menu").click( function(e) {
+
     let drawer = $(".drawer")[0];
     let drawerClone = $(drawer).clone(true);
 
@@ -45,6 +46,10 @@ $(document).ready(function() {
     $(drawerClone).insertAfter('header');
     $(white_backgroundClone).insertAfter('header');
 
+  });
+
+  $('.messager-box .button-send').click( function(e) {
+    $(document.forms.chatForm).trigger('submit');
   });
 
 });

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "browserify src/index.js -o public/javascripts/bundle.js && SET DEBUG=yadachat:* & nodemon ./bin/www"
+    "start": "SET DEBUG=yadachat:* & nodemon ./bin/www",
+    "watch": "watchify src/chat.js src/index.js src/components/Message.js -o public/javascripts/bundle.js -t [ babelify --presets [ es2015 react ] ]"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
@@ -17,10 +18,19 @@
     "morgan": "~1.8.1",
     "node-sass-middleware": "^0.11.0",
     "nodemon": "^1.11.0",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "sass": "^1.0.0-beta.1",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "socket.io": "^2.0.3"
   },
   "devDependencies": {
-    "browserify-css": "^0.10.1"
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.5.2",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify-css": "^0.10.1",
+    "watchify": "^3.9.0"
   }
 }
