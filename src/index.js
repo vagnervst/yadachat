@@ -1,3 +1,5 @@
+let $ = require('jquery');
+
 $(document).ready(function() {
 
   $("header .button-menu").click( function(e) {
@@ -38,7 +40,7 @@ $(document).ready(function() {
     $(white_backgroundClone).addClass("unfolding");
     $(drawerClone).addClass("unfolding");
 
-    $(this).css("display", "none");    
+    $(this).css("display", "none");
 
     $(drawerClone).insertAfter('header');
     $(white_backgroundClone).insertAfter('header');
