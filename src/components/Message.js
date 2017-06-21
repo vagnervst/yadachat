@@ -1,11 +1,13 @@
-let React = require('react');
-let PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class Message extends React.Component {
 
   render() {
+    let isMessageFromMe = this.props.currentUserId === this.props.messageData.userId;
+
     return (
-      <section className="message-box sent">
+      <section className={"message-box " + ( isMessageFromMe ? 'sent' : '') }>
         <div className="box-user-name">
           <h1>{ this.props.messageData.username }</h1>
         </div>
@@ -19,6 +21,7 @@ class Message extends React.Component {
 }
 
 Message.propTypes = {
+  currentUserId: PropTypes.string.isRequired,
   messageData: PropTypes.object.isRequired
 }
 

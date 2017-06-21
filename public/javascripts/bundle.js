@@ -31528,9 +31528,9 @@ var _jquery = require('jquery');
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _Message = require('./components/Message');
+var _MessageList = require('./components/MessageList');
 
-var _Message2 = _interopRequireDefault(_Message);
+var _MessageList2 = _interopRequireDefault(_MessageList);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31548,6 +31548,7 @@ socket.on('connect', function () {
       var messageInput = (0, _jquery2.default)('#chat-message')[0];
 
       socket.emit('postMessage', {
+        userId: socket.id,
         username: usernameInput.value,
         message: messageInput.value
       });
@@ -31556,19 +31557,19 @@ socket.on('connect', function () {
       messageInput.focus();
     });
 
-    socket.on('updateMessages', function (messageData) {
-      showMessage(messageData);
+    socket.on('updateMessages', function (messageList) {
+      showMessage(messageList);
     });
   }
 });
 
-function showMessage(messageData) {
-  var message = _react2.default.createElement(_Message2.default, { messageData: messageData });
+function showMessage(messageList) {
+  var list = _react2.default.createElement(_MessageList2.default, { currentUserId: socket.id, messages: messageList });
 
-  _reactDom2.default.render(message, document.querySelector('.container .chat-box .container-messages'));
+  _reactDom2.default.render(list, document.querySelector('.container .chat-box'));
 }
 
-},{"./components/Message":188,"jquery":25,"react":186,"react-dom":34}],188:[function(require,module,exports){
+},{"./components/MessageList":189,"jquery":25,"react":186,"react-dom":34}],188:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31577,14 +31578,21 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var React = require('react');
-var PropTypes = require('prop-types');
 
 var Message = function (_React$Component) {
   _inherits(Message, _React$Component);
@@ -31598,22 +31606,24 @@ var Message = function (_React$Component) {
   _createClass(Message, [{
     key: 'render',
     value: function render() {
-      return React.createElement(
+      var isMessageFromMe = this.props.currentUserId === this.props.messageData.userId;
+
+      return _react2.default.createElement(
         'section',
-        { className: 'message-box sent' },
-        React.createElement(
+        { className: "message-box " + (isMessageFromMe ? 'sent' : '') },
+        _react2.default.createElement(
           'div',
           { className: 'box-user-name' },
-          React.createElement(
+          _react2.default.createElement(
             'h1',
             null,
             this.props.messageData.username
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'box-user-message' },
-          React.createElement(
+          _react2.default.createElement(
             'p',
             null,
             this.props.messageData.message
@@ -31624,15 +31634,79 @@ var Message = function (_React$Component) {
   }]);
 
   return Message;
-}(React.Component);
+}(_react2.default.Component);
 
 Message.propTypes = {
-  messageData: PropTypes.object.isRequired
+  currentUserId: _propTypes2.default.string.isRequired,
+  messageData: _propTypes2.default.object.isRequired
 };
 
 exports.default = Message;
 
 },{"prop-types":32,"react":186}],189:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _Message = require('./Message');
+
+var _Message2 = _interopRequireDefault(_Message);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MessageList = function (_React$Component) {
+  _inherits(MessageList, _React$Component);
+
+  function MessageList() {
+    _classCallCheck(this, MessageList);
+
+    return _possibleConstructorReturn(this, (MessageList.__proto__ || Object.getPrototypeOf(MessageList)).apply(this, arguments));
+  }
+
+  _createClass(MessageList, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'section',
+        { className: 'container-messages' },
+        this.props.messages.map(function (message) {
+          return _react2.default.createElement(_Message2.default, { key: _this2.props.messages.indexOf(message), currentUserId: _this2.props.currentUserId, messageData: message });
+        })
+      );
+    }
+  }]);
+
+  return MessageList;
+}(_react2.default.Component);
+
+MessageList.propTypes = {
+  currentUserId: _propTypes2.default.string.isRequired,
+  messages: _propTypes2.default.array.isRequired
+};
+
+exports.default = MessageList;
+
+},{"./Message":188,"prop-types":32,"react":186}],190:[function(require,module,exports){
 "use strict";
 
 var _jquery = require("jquery");
@@ -31693,4 +31767,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     });
 });
 
-},{"jquery":25}]},{},[187,189,188]);
+},{"jquery":25}]},{},[187,190,188]);

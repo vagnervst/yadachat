@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 let socket = io();
 
-import Message from './components/Message';
+import MessageList from './components/MessageList';
 
 socket.on('connect', function() {
   let chatForm = document.forms.chatForm;
@@ -17,6 +17,7 @@ socket.on('connect', function() {
       var messageInput = $('#chat-message')[0];
 
       socket.emit('postMessage', {
+        userId: socket.id,
         username: usernameInput.value,
         message: messageInput.value
       });
@@ -26,19 +27,19 @@ socket.on('connect', function() {
 
     });
 
-    socket.on('updateMessages', function( messageData ) {
-      showMessage( messageData );
+    socket.on('updateMessages', function( messageList ) {
+      showMessage( messageList );
     });
 
   }
 
 });
 
-function showMessage( messageData ) {
-  const message = <Message messageData={messageData} />
+function showMessage( messageList ) {
+  const list = <MessageList currentUserId={socket.id} messages={messageList} />
 
   ReactDOM.render(
-    message,
-    document.querySelector('.container .chat-box .container-messages')
+    list,
+    document.querySelector('.container .chat-box')
   );
 }

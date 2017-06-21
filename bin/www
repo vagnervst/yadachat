@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('yadachat:server');
 var http = require('http');
 var io = require('socket.io')();
+var messages = require('../messages');
 
 /**
  * Get port from environment and store in Express.
@@ -33,9 +34,13 @@ server.on('listening', onListening);
 io.attach(server);
 
 io.on('connection', function(socket) {
-  
+
+  io.emit('updateMessages', messages);
+
   socket.on('postMessage', function(messageData) {
-    io.emit('updateMessages', messageData);
+    messages.push( messageData );
+
+    io.emit('updateMessages', messages);
   });
 
 });
