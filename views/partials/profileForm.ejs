@@ -1,0 +1,21 @@
+<form id="profileForm">
+  <% if( hasDrawer ) { %>
+  <div class="box-label-input">
+    <label><span class="label">Status:</span>
+      <select id="userstatus" class="input" name="userstatus">
+        <option value="1" <%= ( userstatus === "1" )? "selected" : "" %> >Online</option>
+        <option value="2" <%= ( userstatus === "2" )? "selected" : "" %> >Away</option>
+        <option value="3" <%= ( userstatus === "3" )? "selected" : "" %> >Busy</option>
+        <option value="4" <%= ( userstatus === "4" )? "selected" : "" %> >Invisible</option>
+      </select>
+    </label>
+  </div>
+  <% } %>
+  <div class="box-label-input">
+    <label><span class="label">Name:</span>
+      <% username = ( username )? username : ""; %>
+      <input id="config-username" class="input input-text" type="text" name="username" value=<%= (username)? username : "" %> />
+    </label>
+  </div>
+  <input class="input-button" type="submit" value="Salvar" />
+</form>

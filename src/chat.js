@@ -16,15 +16,17 @@ socket.on('connect', function() {
       var usernameInput = $('#config-username')[0];
       var messageInput = $('#chat-message')[0];
 
-      socket.emit('postMessage', {
-        userId: socket.id,
-        username: usernameInput.value,
-        message: messageInput.value
-      });
+      if( usernameInput.value.length > 0 && messageInput.value.length > 0 ) {
 
-      messageInput.value = '';
-      messageInput.focus();
+        socket.emit('postMessage', {
+          userId: socket.id,
+          username: usernameInput.value,
+          message: messageInput.value
+        });
 
+        messageInput.value = '';
+        messageInput.focus();
+      }
     });
 
     socket.on('updateMessages', function( messageList ) {

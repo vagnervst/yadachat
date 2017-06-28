@@ -31547,14 +31547,17 @@ socket.on('connect', function () {
       var usernameInput = (0, _jquery2.default)('#config-username')[0];
       var messageInput = (0, _jquery2.default)('#chat-message')[0];
 
-      socket.emit('postMessage', {
-        userId: socket.id,
-        username: usernameInput.value,
-        message: messageInput.value
-      });
+      if (usernameInput.value.length > 0 && messageInput.value.length > 0) {
 
-      messageInput.value = '';
-      messageInput.focus();
+        socket.emit('postMessage', {
+          userId: socket.id,
+          username: usernameInput.value,
+          message: messageInput.value
+        });
+
+        messageInput.value = '';
+        messageInput.focus();
+      }
     });
 
     socket.on('updateMessages', function (messageList) {
@@ -31707,6 +31710,60 @@ MessageList.propTypes = {
 exports.default = MessageList;
 
 },{"./Message":188,"prop-types":32,"react":186}],190:[function(require,module,exports){
+'use strict';
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(0, _jquery2.default)(document).ready(function () {
+
+  function registerUser(userData) {
+    /**
+     * @param userData: object { name: user_name }
+     */
+
+    _jquery2.default.ajax({
+      url: 'api/user/new',
+      method: 'POST',
+      data: userData
+    }).done(function (response) {
+      console.log(response);
+    });
+  }
+
+  function changeStatus(statusCode) {
+    /**
+    * @param statusCode: integer representing the user status for chatting (1: online, 2: AFK, 3: busy, 4: offline)
+    */
+    statusCode = "userstatus=" + statusCode;
+
+    _jquery2.default.ajax({
+      url: 'api/user/updatestatus',
+      method: 'POST',
+      data: statusCode
+    }).done(function (response) {
+      console.log(response);
+    });
+  }
+
+  var profileForm = (0, _jquery2.default)("#profileForm");
+  (0, _jquery2.default)(profileForm).submit(function (e) {
+    e.preventDefault();
+
+    var formData = (0, _jquery2.default)(this).serialize();
+
+    registerUser(formData);
+  });
+
+  (0, _jquery2.default)(profileForm).find("#userstatus").change(function (e) {
+    changeStatus(this.value);
+  });
+});
+
+},{"jquery":25}],191:[function(require,module,exports){
 "use strict";
 
 var _jquery = require("jquery");
@@ -31767,4 +31824,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     });
 });
 
-},{"jquery":25}]},{},[187,190,188]);
+},{"jquery":25}]},{},[187,191,190,188]);
