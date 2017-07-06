@@ -34,17 +34,8 @@ app.use( session({
   secret: 'secret',
   resave: false,
   saveUninitialized: true,
-  cookie: {}
+  cookie: { maxAge: 3600000 }
 }));
-
-app.use( session({
-  genid: function(req) {
-    return genuuid()
-  },
-  secret: 'secret'
-}));
-
-app.use( session({ secret: 'secret', cookie: { maxAge: 60000 } }) );
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);

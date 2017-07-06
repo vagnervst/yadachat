@@ -1,4 +1,4 @@
-<form id="profileForm">
+<form id="profileForm" data-redirect="<%= redirectWhenSubmit %>">
   <% if( hasDrawer ) { %>
   <div class="box-label-input">
     <label><span class="label">Status:</span>
@@ -13,8 +13,7 @@
   <% } %>
   <div class="box-label-input">
     <label><span class="label">Name:</span>
-      <% username = ( username )? username : ""; %>
-      <input id="config-username" class="input input-text" type="text" name="username" value=<%= (username)? username : "" %> />
+      <input id="config-username" class="input input-text" type="text" name="username" value="<%= username %>" />
     </label>
   </div>
   <input class="input-button" type="submit" value="Salvar" />

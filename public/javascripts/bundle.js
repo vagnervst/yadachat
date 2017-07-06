@@ -31721,16 +31721,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _jquery2.default)(document).ready(function () {
 
   function registerUser(userData) {
+    var pageToRedirect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+
     /**
      * @param userData: object { name: user_name }
+     * @param pageToRedirect: string url for redirecting the user, undefined by default
      */
 
+    console.log(pageToRedirect);
     _jquery2.default.ajax({
       url: 'api/user/new',
       method: 'POST',
       data: userData
     }).done(function (response) {
-      console.log(response);
+
+      if (pageToRedirect !== undefined) {
+        window.location = pageToRedirect;
+      }
     });
   }
 
@@ -31755,7 +31762,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
     var formData = (0, _jquery2.default)(this).serialize();
 
-    registerUser(formData);
+    var redirectWhenSubmit = (0, _jquery2.default)(this).attr("data-redirect");
+
+    var homePageUrl = redirectWhenSubmit === "true" ? "/" : undefined;
+
+    registerUser(formData, homePageUrl);
   });
 
   (0, _jquery2.default)(profileForm).find("#userstatus").change(function (e) {

@@ -6,15 +6,15 @@ var io = require('socket.io')();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var session = req.session;
-  console.log(session);
+  var stored_username = ( session.username !== undefined )? session.username : "";
 
   if( session.username ) {
-    res.render('index',
-    {
+    res.render('index', {
       title: 'Yada',
       hasDrawer: true,
-      username: session.username,
-      userstatus: session.userstatus
+      username: stored_username,
+      userstatus: session.userstatus,
+      redirectWhenSubmit: false
     });
 
   } else {
@@ -25,14 +25,15 @@ router.get('/', function(req, res, next) {
 
 router.get('/profile', function(req, res, next) {
   var session = req.session;
-  console.log(session);
+  var stored_username = ( session.username !== undefined )? session.username : "";
 
   res.render('profile',
   {
     title: 'Profile',
     hasDrawer: false,
-    username: session.username,
-    userstatus: session.userstatus
+    username: stored_username,
+    userstatus: session.userstatus,
+    redirectWhenSubmit: true
   });
 
 });

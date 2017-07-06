@@ -1,19 +1,24 @@
 import $ from 'jquery';
 
-
 $(document).ready( function() {
 
-  function registerUser( userData ) {
+  function registerUser( userData, pageToRedirect = undefined ) {
     /**
      * @param userData: object { name: user_name }
+     * @param pageToRedirect: string url for redirecting the user, undefined by default
      */
 
+     console.log(pageToRedirect);
     $.ajax({
       url: 'api/user/new',
       method: 'POST',
       data: userData
     }).done(function( response ) {
-      console.log(response);
+
+      if( pageToRedirect !== undefined ) {
+        window.location = pageToRedirect;
+      }
+
     });
   }
 
@@ -38,7 +43,11 @@ $(document).ready( function() {
 
     var formData = $(this).serialize();
 
-    registerUser( formData );
+    var redirectWhenSubmit = $(this).attr("data-redirect");
+
+    var homePageUrl = ( redirectWhenSubmit === "true" )? "/" : undefined;
+
+    registerUser( formData, homePageUrl );
   });
 
   $(profileForm).find("#userstatus").change( function(e) {
