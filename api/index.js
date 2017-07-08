@@ -7,9 +7,13 @@ router.post('/user/new', function(req, res, next) {
   var userInfo = req.body;
 
   var session = req.session;
+  var oldName = session.username;
   session.username = userInfo.username;
 
-  res.send(session);
+  res.send({
+    name: oldName,
+    newName: userInfo.username
+  });
 });
 
 router.post('/user/updatestatus', function(req, res, next) {

@@ -323,6 +323,12 @@ header {
     overflow-y: auto;
     padding-right: 10px;
 
+    .chat-alert {
+      text-align: center;
+      font-size: 1em;
+      color: gray;
+    }
+
     .message-box {
       width: 290px;
       margin-top: 15px;
@@ -365,7 +371,7 @@ header {
         }
 
         .timestamp {
-          font-size: 0.8em;          
+          font-size: 0.8em;
           border-bottom: 1px solid #3a3a3a;
           text-align: left;
         }

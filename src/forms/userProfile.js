@@ -1,4 +1,5 @@
 import $ from 'jquery';
+let socket = io();
 
 $(document).ready( function() {
 
@@ -8,15 +9,28 @@ $(document).ready( function() {
      * @param pageToRedirect: string url for redirecting the user, undefined by default
      */
 
-     console.log(pageToRedirect);
+
     $.ajax({
       url: 'api/user/new',
       method: 'POST',
       data: userData
-    }).done(function( response ) {
+    }).done(function( res ) {
 
       if( pageToRedirect !== undefined ) {
+
+        socket.emit('postMessage', {
+          type: "alert",
+          message: res.newName + " connected"
+        });
+
         window.location = pageToRedirect;
+      } else {
+
+        socket.emit('postMessage', {
+          type: "alert",
+          message: res.name + " is now called " + res.newName
+        });
+
       }
 
     });
@@ -33,7 +47,7 @@ $(document).ready( function() {
       method: 'POST',
       data: statusCode
     }).done(function( response ) {
-      console.log(response);
+
     });
   }
 

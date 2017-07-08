@@ -50,11 +50,12 @@ socket.on('connect', function() {
           })
         ).then( function(userId) {
 
-          const user_session_id = userId;          
+          const user_session_id = userId;
 
           var now = moment().unix();
 
           socket.emit('postMessage', {
+            type: "usermessage",
             userId: user_session_id,
             username: usernameInput.value,
             message: messageInput.value,
@@ -82,6 +83,8 @@ function showMessage( messageList, userID ) {
     list,
     document.querySelector('.container .chat-box')
   );
+
+  $(".container-messages").scrollTop($(".container-messages")[0].scrollHeight);
 }
 
 $(document).ready(function() {
