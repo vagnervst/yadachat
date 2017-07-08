@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var messages = require('../messages');
-var io = require('socket.io')();
+var io = require('../io');
+var cookie = require('cookie');
+var cookieParser = require('cookie-parser');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -9,6 +11,10 @@ router.get('/', function(req, res, next) {
   var stored_username = ( session.username !== undefined )? session.username : "";
 
   if( session.username ) {
+
+    var parsedCookie = cookie.parse( req.headers.cookie );
+    var userId = cookieParser.signedCookie( parsedCookie['connect.sid'], 'secret' );
+
     res.render('index', {
       title: 'Yada',
       hasDrawer: true,

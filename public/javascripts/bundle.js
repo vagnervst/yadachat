@@ -31537,6 +31537,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var socket = io();
 
 socket.on('connect', function () {
+
+  socket.on('showMessages', function (messagesClientData) {
+    showMessage(messagesClientData.messageList, messagesClientData.currentUserId);
+  });
+
   var chatForm = document.forms.chatForm;
 
   if (chatForm) {
@@ -31549,28 +31554,45 @@ socket.on('connect', function () {
 
       if (usernameInput.value.length > 0 && messageInput.value.length > 0) {
 
-        socket.emit('postMessage', {
-          userId: socket.id,
-          username: usernameInput.value,
-          message: messageInput.value
-        });
+        _jquery2.default.ajax({
+          url: 'api/user/getid',
+          type: 'GET',
+          statusCode: {
+            204: function _() {
+              alert("User ID not defined");
+            }
+          },
+          success: function success(res) {
+            var user_session_id = res;
 
-        messageInput.value = '';
-        messageInput.focus();
+            socket.emit('postMessage', {
+              userId: user_session_id,
+              username: usernameInput.value,
+              message: messageInput.value
+            });
+
+            messageInput.value = '';
+            messageInput.focus();
+          }
+
+        }); //Ajax call
       }
-    });
-
-    socket.on('updateMessages', function (messageList) {
-      showMessage(messageList);
-    });
+    }); //Submit event
   }
-});
+}); //Socket connection event
 
-function showMessage(messageList) {
-  var list = _react2.default.createElement(_MessageList2.default, { currentUserId: socket.id, messages: messageList });
+function showMessage(messageList, userID) {
+  var list = _react2.default.createElement(_MessageList2.default, { currentUserId: userID, messages: messageList });
 
   _reactDom2.default.render(list, document.querySelector('.container .chat-box'));
 }
+
+(0, _jquery2.default)(document).ready(function () {
+
+  if ((0, _jquery2.default)("#homePage")[0]) {
+    socket.emit('updateMessages', {});
+  }
+});
 
 },{"./components/MessageList":189,"jquery":25,"react":186,"react-dom":34}],188:[function(require,module,exports){
 'use strict';

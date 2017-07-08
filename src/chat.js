@@ -6,6 +6,11 @@ let socket = io();
 import MessageList from './components/MessageList';
 
 socket.on('connect', function() {
+
+  socket.on('showMessages', function( messagesClientData ) {
+    showMessage( messagesClientData.messageList, messagesClientData.currentUserId );
+  });
+
   let chatForm = document.forms.chatForm;
 
   if( chatForm ) {
@@ -18,30 +23,50 @@ socket.on('connect', function() {
 
       if( usernameInput.value.length > 0 && messageInput.value.length > 0 ) {
 
-        socket.emit('postMessage', {
-          userId: socket.id,
-          username: usernameInput.value,
-          message: messageInput.value
-        });
+        $.ajax({
+          url: 'api/user/getid',
+          type: 'GET',
+          statusCode: {
+            204: function() {
+              alert("User ID not defined");
+            }
+          },
+          success: function( res ) {
+            const user_session_id = res;
 
-        messageInput.value = '';
-        messageInput.focus();
+            socket.emit('postMessage', {
+              userId: user_session_id,
+              username: usernameInput.value,
+              message: messageInput.value
+            });
+
+            messageInput.value = '';
+            messageInput.focus();
+
+          }
+
+        }); //Ajax call
+
       }
-    });
 
-    socket.on('updateMessages', function( messageList ) {
-      showMessage( messageList );
-    });
-
+    }); //Submit event
   }
 
-});
+}); //Socket connection event
 
-function showMessage( messageList ) {
-  const list = <MessageList currentUserId={socket.id} messages={messageList} />
+function showMessage( messageList, userID ) {
+  const list = <MessageList currentUserId={userID} messages={messageList} />
 
   ReactDOM.render(
     list,
     document.querySelector('.container .chat-box')
   );
 }
+
+$(document).ready(function() {
+
+  if( $("#homePage")[0] ) {
+    socket.emit('updateMessages', {});
+  }
+
+});

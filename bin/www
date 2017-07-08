@@ -6,9 +6,8 @@
 
 var app = require('../app');
 var debug = require('debug')('yadachat:server');
-var http = require('http');
-var io = require('socket.io')();
-var messages = require('../messages');
+var server = require('http').Server(app);
+var io = require('../io');
 
 /**
  * Get port from environment and store in Express.
@@ -16,12 +15,6 @@ var messages = require('../messages');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -32,18 +25,6 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 io.attach(server);
-
-io.on('connection', function(socket) {
-
-  io.emit('updateMessages', messages);
-
-  socket.on('postMessage', function(messageData) {
-    messages.push( messageData );
-
-    io.emit('updateMessages', messages);
-  });
-
-});
 
 /**
  * Normalize a port into a number, string, or false.
