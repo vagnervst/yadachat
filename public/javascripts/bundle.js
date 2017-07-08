@@ -31538,8 +31538,21 @@ var socket = io();
 
 socket.on('connect', function () {
 
-  socket.on('showMessages', function (messagesClientData) {
-    showMessage(messagesClientData.messageList, messagesClientData.currentUserId);
+  socket.on('showMessages', function (messageData) {
+
+    _jquery2.default.ajax({
+      url: 'api/user/getid',
+      type: 'GET',
+      statusCode: {
+        204: function _() {
+          alert("User ID not defined");
+        }
+      },
+      success: function success(user_session_id) {
+        showMessage(messageData.messageList, user_session_id);
+      }
+
+    }); //Ajax call
   });
 
   var chatForm = document.forms.chatForm;
@@ -31582,6 +31595,7 @@ socket.on('connect', function () {
 }); //Socket connection event
 
 function showMessage(messageList, userID) {
+
   var list = _react2.default.createElement(_MessageList2.default, { currentUserId: userID, messages: messageList });
 
   _reactDom2.default.render(list, document.querySelector('.container .chat-box'));

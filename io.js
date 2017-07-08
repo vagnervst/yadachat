@@ -14,8 +14,7 @@ io.on('connection', function(socket) {
     console.log(JSON.stringify(messagesClientData));
 
     io.emit('showMessages', {
-      messageList: messages,
-      currentUserId: userId
+      messageList: messages
     });
 
   });
@@ -24,8 +23,7 @@ io.on('connection', function(socket) {
     messages.push( messageData );
 
     io.emit('showMessages', {
-      messageList: messages,
-      currentUserId: userId
+      messageList: messages
     });
 
   });

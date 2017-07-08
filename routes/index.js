@@ -12,9 +12,6 @@ router.get('/', function(req, res, next) {
 
   if( session.username ) {
 
-    var parsedCookie = cookie.parse( req.headers.cookie );
-    var userId = cookieParser.signedCookie( parsedCookie['connect.sid'], 'secret' );
-
     res.render('index', {
       title: 'Yada',
       hasDrawer: true,

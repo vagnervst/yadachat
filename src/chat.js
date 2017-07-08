@@ -7,8 +7,22 @@ import MessageList from './components/MessageList';
 
 socket.on('connect', function() {
 
-  socket.on('showMessages', function( messagesClientData ) {
-    showMessage( messagesClientData.messageList, messagesClientData.currentUserId );
+  socket.on('showMessages', function( messageData ) {
+
+    $.ajax({
+      url: 'api/user/getid',
+      type: 'GET',
+      statusCode: {
+        204: function() {
+          alert("User ID not defined");
+        }
+      },
+      success: function( user_session_id ) {
+        showMessage( messageData.messageList, user_session_id );
+      }
+
+    }); //Ajax call
+
   });
 
   let chatForm = document.forms.chatForm;
@@ -55,6 +69,7 @@ socket.on('connect', function() {
 }); //Socket connection event
 
 function showMessage( messageList, userID ) {
+
   const list = <MessageList currentUserId={userID} messages={messageList} />
 
   ReactDOM.render(
