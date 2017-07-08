@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var session = require('express-session');
-var moment = require('moment-timezone');
 
 router.post('/user/new', function(req, res, next) {
   var userInfo = req.body;
