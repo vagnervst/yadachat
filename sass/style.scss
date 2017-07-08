@@ -312,6 +312,7 @@ header {
   padding-top: 5px;
   padding-right: 20px;
   border-radius: 10px 10px 0px 0px;
+  z-index: 1;
 
   .container-messages {
     display: flex;
@@ -424,6 +425,7 @@ header {
   bottom: 10px;
   border-radius: 100px 100px 0px 0px;
   right: 10px;
+  z-index: 2;
 
   form {
     display: flex;
