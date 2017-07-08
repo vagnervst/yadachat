@@ -364,6 +364,12 @@ header {
           font-size: 1.2em;
         }
 
+        .timestamp {
+          font-size: 0.8em;          
+          border-bottom: 1px solid #3a3a3a;
+          text-align: left;
+        }
+
       }
 
     }
@@ -387,6 +393,11 @@ header {
 
         p {
           color: white;
+        }
+
+        .timestamp {
+          text-align: right;
+          color: #c1b7b7;
         }
 
       }

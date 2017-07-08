@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 let socket = io();
+var moment = require('moment');
 
 import MessageList from './components/MessageList';
 
@@ -37,29 +38,34 @@ socket.on('connect', function() {
 
       if( usernameInput.value.length > 0 && messageInput.value.length > 0 ) {
 
-        $.ajax({
-          url: 'api/user/getid',
-          type: 'GET',
-          statusCode: {
-            204: function() {
-              alert("User ID not defined");
+        $.when(
+          $.ajax({
+            url: 'api/user/getid',
+            type: 'GET',
+            statusCode: {
+              204: function() {
+                alert("User ID not defined");
+              }
             }
-          },
-          success: function( res ) {
-            const user_session_id = res;
+          })
+        ).then( function(userId) {
 
-            socket.emit('postMessage', {
-              userId: user_session_id,
-              username: usernameInput.value,
-              message: messageInput.value
-            });
+          const user_session_id = userId;          
 
-            messageInput.value = '';
-            messageInput.focus();
+          var now = moment().unix();
 
-          }
+          socket.emit('postMessage', {
+            userId: user_session_id,
+            username: usernameInput.value,
+            message: messageInput.value,
+            time: now
+          });
 
-        }); //Ajax call
+          messageInput.value = '';
+          messageInput.focus();
+        });
+
+        $.ajax(); //Ajax call
 
       }
 
